@@ -1,28 +1,30 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import CardDeck from './lib/cardDeck';
+import Card from './lib/card';
 import './cards.css';
 
 const App: React.FC = () => {
-  const deck = new CardDeck();
+  const [drawnCards, setDrawnCards] = useState<Card[]>([]);
 
-  const [currentCards, setCurrentCards] = useState(deck.getCards(4));
+  const handleDealCards = () => {
+    const deck = new CardDeck();
 
-  const handleGenerateCards = () => {
-    const newCards = deck.getCards(4);
-
-    setCurrentCards(newCards);
+    const newDrawnCards = deck.getCards(5);
+    setDrawnCards(newDrawnCards);
   };
 
   return (
     <div>
       <h1>Poker</h1>
-      <div>
-        {currentCards.map((card, index) => (
-          <p key={index}>{`${card.rank} ${card.suit}`}</p>
+      <button onClick={handleDealCards}>New hand</button>
+      <div className="playingCards faceImages">
+        {drawnCards.map((card, index) => (
+          <span key={index} className={`card rank-${card.rank} ${card.suit}`}>
+            <span className="rank">{card.rank}</span>
+            <span className="suit">{card.suit}</span>
+          </span>
         ))}
       </div>
-
-      <button onClick={handleGenerateCards}>new hand</button>
     </div>
   );
 };
